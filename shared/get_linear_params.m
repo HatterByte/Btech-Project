@@ -41,23 +41,20 @@ p.B_d    = B_d;
 p.C      = C;
 p.D      = D;
 
-%% IEID observer gain (from original params_pwr.m)
-L = [1.957470876325828e+03;
-     0.156014381434970;
-     87.431287944182941;
-     7.555735482558515;
-     1.000000000000067e+02];
+%% IEID observer gain (Optimal from GCRA)
+Q = diag([1.11153, 1e2, 10, 10, 1]);  % Q1 = 10^0.0459
+L = lqe(p.A_real, eye(5), p.C, Q, 1);
 
 p.L_obs  = L;
-p.A_obs  = A_n - L*C;
-p.B_obs  = [B_n, L];    % inputs: [u_f; y]
-p.Bnp    = pinv(B_n);
-p.tau    = 0.02;
+p.A_obs  = p.A_real - L*p.C;
+p.B_obs  = [p.B_real, L];    % inputs: [u_f; y]
+p.Bnp    = pinv(p.B_real);
+p.tau    = 0.004165;  % IEID LPF time constant
 
 %% PID gains (outer loop)
-p.Kp = 8.89;
-p.Ki = 5.26;
-p.Kd = 0.0521;
+p.Kp = 4.152582;
+p.Ki = 2.708109;
+p.Kd = 0.009036;
 p.N  = 100;
 
 end
