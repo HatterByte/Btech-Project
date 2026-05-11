@@ -40,7 +40,7 @@ p.D = 0;
 
 % Observer gain (Placeholder - will use one that works with new matrices)
 % We'll use LQE or pole placement to find a stable L for this A matrix.
-Q = diag([1e6, 1e2, 10, 10, 1]);
+Q = diag([173387, 1e2, 10, 10, 1]);
 R = 1;
 p.L_ieid = lqe(p.A, eye(5), p.C, Q, R);
 
@@ -83,10 +83,10 @@ p.k1 = p.wc^2;
 p.k2 = 2 * p.wc;
 
 % PID Gains (for IEID outer loop)
-p.Kp = 8.89;
-p.Ki = 5.26;
-p.Kd = 0.0521;
-p.tau = 0.02;
+p.Kp = 4.273399;
+p.Ki = 2.930420;
+p.Kd = 0.024345;
+p.tau = 0.005777;
 p.N  = 100;  % Derivative filter coefficient (Simulink default)
 
 % Control rod velocity limits
