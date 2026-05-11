@@ -44,12 +44,41 @@ Q = diag([1e6, 1e2, 10, 10, 1]);
 R = 1;
 p.L_ieid = lqe(p.A, eye(5), p.C, Q, R);
 
-% ADRC Parameters — confirmed from paper Simulink source
-% Paper: bo=150, wo=55 (we use 65 per Suggestion 1), wc=1
-% For our 60s scenario at n0=0.5, wc=5 gives faster visible tracking response.
-p.b0 = 150;    % input gain — confirmed from paper ESO code (bo=150, not n0*Gr/L)
-p.wo = 65;     % observer bandwidth (rad/s) — increased from paper's 55
-p.wc = 5;      % controller bandwidth — faster than paper's wc=1 for our shorter scenario
+% ADRC/CESO parameters from the paper Simulink setup.
+p.b0  = 150;
+p.k   = 1;
+p.wo  = 55 * p.k;
+p.wlg = 45 * p.k;
+p.w1  = 20 * p.k;
+p.w2  = 40 * p.k;
+p.wc  = 1;
+
+% Paper-specific reduced ADRC model.
+p.a0 = -p.beta * p.lambda / p.L;
+p.a1 =  p.beta / p.L;
+p.Af = [0, 1, 0;
+       -p.a0, -p.a1, 1;
+        0, 0, 0];
+p.Bf = [0; p.b0; 0];
+p.Cf = [1, 0, 0];
+
+% Standard ESO gain in the paper coordinates.
+p.Lf = [3*p.wo - p.a1;
+        3*p.wo^2 - p.a0 - p.a1*(3*p.wo - p.a1);
+        p.wo^3];
+
+% Two-level CESO gains.
+p.L1 = [3*p.w1 - p.a1;
+        3*p.w1^2 - p.a0 - p.a1*(3*p.w1 - p.a1);
+        p.w1^3];
+p.L2 = [3*p.w2 - p.a1;
+        3*p.w2^2 - p.a0 - p.a1*(3*p.w2 - p.a1);
+        p.w2^3];
+p.Gamma = [0, 0, 0;
+           0, 0, 1;
+           0, 0, 0];
+
+% Kept for compatibility with older scripts.
 p.k1 = p.wc^2;
 p.k2 = 2 * p.wc;
 
@@ -57,6 +86,11 @@ p.k2 = 2 * p.wc;
 p.Kp = 8.89;
 p.Ki = 5.26;
 p.Kd = 0.0521;
+p.tau = 0.02;
 p.N  = 100;  % Derivative filter coefficient (Simulink default)
+
+% Control rod velocity limits
+p.u_max =  0.01;
+p.u_min = -0.01;
 
 end

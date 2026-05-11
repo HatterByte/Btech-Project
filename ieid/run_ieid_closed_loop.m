@@ -22,11 +22,11 @@ xf1   = z(13); % d_tilde
 xf2   = z(14);
 
 % Reference
-r_step = 0.5 + 0.1 * (t >= 20);
-r_dev  = r_step - 0.5;
+if isfield(p, 'r_dev_fcn'); r_dev = p.r_dev_fcn(t); else; r_dev = 0.1 * (t >= 20); end
 
 % Output deviation
-y = n - 0.5;
+if isfield(p, 'n0'); n0 = p.n0; else; n0 = 0.5; end
+y = n - n0;
 
 % Tracking error
 e = r_dev - y;
@@ -41,14 +41,15 @@ d_tilde = xf1;
 u = u_f - d_tilde;
 
 % External disturbance
-d = disturbance_fcn(t);
+if isfield(p, 'd_fcn'); d = p.d_fcn(t); else; d = disturbance_fcn(t); end
 
 % Total reactivity rate input to plant
 u_total = u + d;
 
 % --- Plant Dynamics (Nonlinear) ---
-Te = 290;
-rho = total_reactivity(n, x_plant_core(3), x_plant_core(4), Te, rho_rod);
+if isfield(p, 'Te_fcn'); Te = p.Te_fcn(t); else; Te = 290; end
+if isfield(p, 'd_rho_fcn'); d_rho = p.d_rho_fcn(t); else; d_rho = 0; end
+rho = total_reactivity(n, x_plant_core(3), x_plant_core(4), Te, rho_rod, d_rho);
 dx_plant_core = pwr_nonlinear_dynamics(x_plant_core, rho, Te);
 drho_rod = p.Gr * u_total;
 
@@ -67,7 +68,7 @@ dx_int = e;
 dx_d   = -p.N * x_d + p.N * e;
 
 % 4. IEID 2nd-order LPF
-tau = 0.02;
+tau = p.tau;
 dxf1 = xf2;
 dxf2 = (d_hat - xf1 - 1.41 * tau * xf2) / (tau^2);
 

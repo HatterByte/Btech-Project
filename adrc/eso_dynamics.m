@@ -1,35 +1,26 @@
-function dz = eso_dynamics(z, y, u, wo, b0)
-%ESO_DYNAMICS Dynamics of the Linear Extended State Observer (LESO).
+function dz = eso_dynamics(z, y, u, varargin)
+%ESO_DYNAMICS Linear ESO dynamics.
 %
-%   Reduced-order model:
-%     x1_dot = x2
-%     x2_dot = x3 + b0*u
-%     x3_dot = h  (unknown disturbance rate)
+%   Paper-matched form:
+%       dz = Af*z + Bf*u + Lf*(y - Cf*z)
 %
-%   Observer Equations:
-%     dz1 = z2 + L1*(y - z1)
-%     dz2 = z3 + b0*u + L2*(y - z1)
-%     dz3 = L3*(y - z1)
-%
-%   INPUTS:
-%     z  : Observer states [z1; z2; z3]
-%     y  : Plant output (measured power deviation)
-%     u  : Control input
-%     wo : Observer bandwidth
-%     b0 : Gain parameter
+%   Legacy form:
+%       dz = eso_dynamics(z, y, u, wo, b0)
 
-% Gains parameterized by bandwidth wo
+if nargin == 4
+    p = varargin{1};
+    dz = p.Af*z + p.Bf*u + p.Lf*(y - p.Cf*z);
+    return;
+end
+
+wo = varargin{1};
+b0 = varargin{2};
+
 L1 = 3 * wo;
 L2 = 3 * wo^2;
 L3 = wo^3;
 
-z1 = z(1);
-z2 = z(2);
-z3 = z(3);
-
-dz1 = z2 + L1 * (y - z1);
-dz2 = z3 + b0 * u + L2 * (y - z1);
-dz3 = L3 * (y - z1);
-
-dz = [dz1; dz2; dz3];
+dz = [z(2) + L1 * (y - z(1));
+      z(3) + b0 * u + L2 * (y - z(1));
+      L3 * (y - z(1))];
 end

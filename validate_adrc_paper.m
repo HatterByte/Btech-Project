@@ -81,12 +81,13 @@ win = @(ta, tb) (t >= ta & t <= tb);
 %% =========================================================================
 %% Appearance settings
 %% =========================================================================
-lw_ref  = 1.2;
-lw_out  = 1.8;
-fs_ax   = 10;
-fs_title= 10;
-C_ref   = [0.5 0.5 0.5];    % grey — reference z_r
-C_out   = [0   0.2 0.8];    % blue  — plant output n_r
+lw_ref  = 2.0;
+lw_out  = 2.0;
+fs_ax   = 12;
+fs_title= 14;
+C_ref   = [0.3 0.3 0.3];    % Dark Grey — reference z_r
+C_out   = [0 0.4470 0.7410];% Blue  — plant output n_r
+C_ctrl  = [0.8500 0.3250 0.0980]; % Orange-Red — control u
 
 %% =========================================================================
 %% FIGURE 1 — Scenario 1: Power Tracking
@@ -119,27 +120,27 @@ for row = 1:3
     ylim(ylims_n1{row});
     xlim([ta tb]);
     grid on;
-    xlabel('Time (s)', 'FontSize', fs_ax);
-    ylabel('n_r', 'FontSize', fs_ax);
-    title(labels1{row}, 'FontSize', fs_title);
-    if row == 1; legend('z_r','n_r','Location','best','FontSize',fs_ax-1); end
-    set(gca,'FontSize',fs_ax);
+    set(gca, 'GridAlpha', 0.15, 'FontSize', fs_ax);
+    xlabel('Time (s)', 'FontSize', fs_ax, 'FontWeight', 'bold');
+    ylabel('n_r', 'FontSize', fs_ax, 'FontWeight', 'bold');
+    title(labels1{row}, 'FontSize', fs_title, 'FontWeight', 'bold');
+    if row == 1; legend('z_r','n_r','Location','best','FontSize',fs_ax); end
 
     % Right: control input u
     subplot(3,2, 2*row);
-    plot(t(idx), u_sig(idx), '-', 'Color', [0.8 0.2 0], 'LineWidth', lw_out);
-    yline(p.u_max, 'k:', 'LineWidth', 1);
-    yline(p.u_min, 'k:', 'LineWidth', 1);
+    plot(t(idx), u_sig(idx), '-', 'Color', C_ctrl, 'LineWidth', lw_out);
+    yline(p.u_max, '--', 'Color', [0.5 0.5 0.5], 'LineWidth', 1.5);
+    yline(p.u_min, '--', 'Color', [0.5 0.5 0.5], 'LineWidth', 1.5);
     ylim([p.u_min*1.4  p.u_max*1.4]);
     xlim([ta tb]);
     grid on;
-    xlabel('Time (s)', 'FontSize', fs_ax);
-    ylabel('u  (\deltak/k/s)', 'FontSize', fs_ax);
-    title([labels1{row} ' — control'], 'FontSize', fs_title);
-    set(gca,'FontSize',fs_ax);
+    set(gca, 'GridAlpha', 0.15, 'FontSize', fs_ax);
+    xlabel('Time (s)', 'FontSize', fs_ax, 'FontWeight', 'bold');
+    ylabel('u  (\deltak/k/s)', 'FontSize', fs_ax, 'FontWeight', 'bold');
+    title([labels1{row} ' — control'], 'FontSize', fs_title, 'FontWeight', 'bold');
 end
 sgtitle('Figure 1 — Scenario 1: Power Tracking (compare with paper Fig.)', ...
-        'FontSize', 12, 'FontWeight','bold');
+        'FontSize', 16, 'FontWeight','bold');
 
 %% =========================================================================
 %% FIGURE 2 — Scenario 2: T_e (Coolant Inlet Temp) Disturbance
@@ -169,27 +170,27 @@ for row = 1:2
     ylim(ylims_n2{row});
     xlim([ta tb]);
     grid on;
-    xlabel('Time (s)', 'FontSize', fs_ax);
-    ylabel('n_r', 'FontSize', fs_ax);
-    title(labels2{row}, 'FontSize', fs_title);
-    if row == 1; legend('z_r','n_r','Location','best','FontSize',fs_ax-1); end
-    set(gca,'FontSize',fs_ax);
+    set(gca, 'GridAlpha', 0.15, 'FontSize', fs_ax);
+    xlabel('Time (s)', 'FontSize', fs_ax, 'FontWeight', 'bold');
+    ylabel('n_r', 'FontSize', fs_ax, 'FontWeight', 'bold');
+    title(labels2{row}, 'FontSize', fs_title, 'FontWeight', 'bold');
+    if row == 1; legend('z_r','n_r','Location','best','FontSize',fs_ax); end
 
     % Right: control input u
     subplot(2,2, 2*row);
-    plot(t(idx), u_sig(idx), '-', 'Color', [0.8 0.2 0], 'LineWidth', lw_out);
-    yline(p.u_max, 'k:', 'LineWidth', 1);
-    yline(p.u_min, 'k:', 'LineWidth', 1);
+    plot(t(idx), u_sig(idx), '-', 'Color', C_ctrl, 'LineWidth', lw_out);
+    yline(p.u_max, '--', 'Color', [0.5 0.5 0.5], 'LineWidth', 1.5);
+    yline(p.u_min, '--', 'Color', [0.5 0.5 0.5], 'LineWidth', 1.5);
     ylim([p.u_min*1.4  p.u_max*1.4]);
     xlim([ta tb]);
     grid on;
-    xlabel('Time (s)', 'FontSize', fs_ax);
-    ylabel('u  (\deltak/k/s)', 'FontSize', fs_ax);
-    title([labels2{row} ' — control'], 'FontSize', fs_title);
-    set(gca,'FontSize',fs_ax);
+    set(gca, 'GridAlpha', 0.15, 'FontSize', fs_ax);
+    xlabel('Time (s)', 'FontSize', fs_ax, 'FontWeight', 'bold');
+    ylabel('u  (\deltak/k/s)', 'FontSize', fs_ax, 'FontWeight', 'bold');
+    title([labels2{row} ' — control'], 'FontSize', fs_title, 'FontWeight', 'bold');
 end
 sgtitle('Figure 2 — Scenario 2: T_e Disturbance (compare with paper Fig.)', ...
-        'FontSize', 12, 'FontWeight','bold');
+        'FontSize', 16, 'FontWeight','bold');
 
 %% =========================================================================
 %% FIGURE 3 — Scenario 3: Reactivity Disturbance
@@ -219,27 +220,27 @@ for row = 1:2
     ylim(ylims_n3{row});
     xlim([ta tb]);
     grid on;
-    xlabel('Time (s)', 'FontSize', fs_ax);
-    ylabel('n_r', 'FontSize', fs_ax);
-    title(labels3{row}, 'FontSize', fs_title);
-    if row == 1; legend('z_r','n_r','Location','best','FontSize',fs_ax-1); end
-    set(gca,'FontSize',fs_ax);
+    set(gca, 'GridAlpha', 0.15, 'FontSize', fs_ax);
+    xlabel('Time (s)', 'FontSize', fs_ax, 'FontWeight', 'bold');
+    ylabel('n_r', 'FontSize', fs_ax, 'FontWeight', 'bold');
+    title(labels3{row}, 'FontSize', fs_title, 'FontWeight', 'bold');
+    if row == 1; legend('z_r','n_r','Location','best','FontSize',fs_ax); end
 
     % Right: control input u
     subplot(2,2, 2*row);
-    plot(t(idx), u_sig(idx), '-', 'Color', [0.8 0.2 0], 'LineWidth', lw_out);
-    yline(p.u_max, 'k:', 'LineWidth', 1);
-    yline(p.u_min, 'k:', 'LineWidth', 1);
+    plot(t(idx), u_sig(idx), '-', 'Color', C_ctrl, 'LineWidth', lw_out);
+    yline(p.u_max, '--', 'Color', [0.5 0.5 0.5], 'LineWidth', 1.5);
+    yline(p.u_min, '--', 'Color', [0.5 0.5 0.5], 'LineWidth', 1.5);
     ylim([p.u_min*1.4  p.u_max*1.4]);
     xlim([ta tb]);
     grid on;
-    xlabel('Time (s)', 'FontSize', fs_ax);
-    ylabel('u  (\deltak/k/s)', 'FontSize', fs_ax);
-    title([labels3{row} ' — control'], 'FontSize', fs_title);
-    set(gca,'FontSize',fs_ax);
+    set(gca, 'GridAlpha', 0.15, 'FontSize', fs_ax);
+    xlabel('Time (s)', 'FontSize', fs_ax, 'FontWeight', 'bold');
+    ylabel('u  (\deltak/k/s)', 'FontSize', fs_ax, 'FontWeight', 'bold');
+    title([labels3{row} ' — control'], 'FontSize', fs_title, 'FontWeight', 'bold');
 end
 sgtitle('Figure 3 — Scenario 3: Reactivity Disturbance (compare with paper Fig.)', ...
-        'FontSize', 12, 'FontWeight','bold');
+        'FontSize', 16, 'FontWeight','bold');
 
 %% =========================================================================
 %% Steady-state summary
@@ -274,36 +275,40 @@ figure('Name','Fig 4 — ESO Disturbance Estimation','Color','w', ...
        'Position',[50 50 1100 480]);
 
 subplot(3,1,1);
-plot(t, d_rho_sig, 'k-',  'LineWidth', 1.2, 'DisplayName','d\rho (actual reactivity disturb)'); hold on;
-plot(t, d_est_norm,'b--', 'LineWidth', lw_out, 'DisplayName','z_3/b_0 (ESO estimate)');
+plot(t, d_rho_sig, '-',  'Color', C_ref, 'LineWidth', 1.5, 'DisplayName','d\rho (actual reactivity disturb)'); hold on;
+plot(t, d_est_norm,'-', 'Color', C_out, 'LineWidth', lw_out, 'DisplayName','z_3/b_0 (ESO estimate)');
 hold off; grid on;
-xlabel('Time (s)'); ylabel('δk/k');
-title('ESO Disturbance Estimate vs Actual  (z_3/b_0 captures total disturbance)');
-legend('Location','best'); xlim([0 400]);
-set(gca,'FontSize',fs_ax);
+set(gca, 'GridAlpha', 0.15, 'FontSize', fs_ax);
+xlabel('Time (s)', 'FontSize', fs_ax, 'FontWeight', 'bold'); 
+ylabel('δk/k', 'FontSize', fs_ax, 'FontWeight', 'bold');
+title('ESO Disturbance Estimate vs Actual  (z_3/b_0 captures total disturbance)', 'FontSize', fs_title, 'FontWeight', 'bold');
+legend('Location','best', 'FontSize', fs_ax); xlim([0 400]);
 
 subplot(3,1,2);
 yyaxis left;
-plot(t, Te_sig - p.Te0, 'r-', 'LineWidth', 1.2, 'DisplayName','\DeltaTe (°C)');
-ylabel('\DeltaTe from nominal (°C)');
+plot(t, Te_sig - p.Te0, '-', 'Color', C_ctrl, 'LineWidth', lw_out, 'DisplayName','\DeltaTe (°C)');
+ylabel('\DeltaTe from nominal (°C)', 'FontSize', fs_ax, 'FontWeight', 'bold');
 yyaxis right;
-plot(t, d_est_norm, 'b--', 'LineWidth', lw_out, 'DisplayName','z_3/b_0');
-ylabel('ESO disturbance estimate');
-grid on; xlabel('Time (s)');
-title('Scenario 2 context: T_e variation vs ESO response');
-xlim([180 300]); set(gca,'FontSize',fs_ax);
+plot(t, d_est_norm, '-', 'Color', C_out, 'LineWidth', lw_out, 'DisplayName','z_3/b_0');
+ylabel('ESO disturbance estimate', 'FontSize', fs_ax, 'FontWeight', 'bold');
+grid on; 
+set(gca, 'GridAlpha', 0.15, 'FontSize', fs_ax);
+xlabel('Time (s)', 'FontSize', fs_ax, 'FontWeight', 'bold');
+title('Scenario 2 context: T_e variation vs ESO response', 'FontSize', fs_title, 'FontWeight', 'bold');
+xlim([180 300]); 
 
 subplot(3,1,3);
-plot(t, d_rho_sig, 'k-',  'LineWidth', 1.2, 'DisplayName','d\rho actual'); hold on;
-plot(t, d_est_norm,'b--', 'LineWidth', lw_out, 'DisplayName','z_3/b_0 estimate');
+plot(t, d_rho_sig, '-',  'Color', C_ref, 'LineWidth', 1.5, 'DisplayName','d\rho actual'); hold on;
+plot(t, d_est_norm,'-', 'Color', C_out, 'LineWidth', lw_out, 'DisplayName','z_3/b_0 estimate');
 hold off; grid on;
-xlabel('Time (s)'); ylabel('δk/k');
-title('Scenario 3 zoom: Reactivity disturbance estimation');
-legend('Location','best'); xlim([280 400]);
-set(gca,'FontSize',fs_ax);
+set(gca, 'GridAlpha', 0.15, 'FontSize', fs_ax);
+xlabel('Time (s)', 'FontSize', fs_ax, 'FontWeight', 'bold'); 
+ylabel('δk/k', 'FontSize', fs_ax, 'FontWeight', 'bold');
+title('Scenario 3 zoom: Reactivity disturbance estimation', 'FontSize', fs_title, 'FontWeight', 'bold');
+legend('Location','best', 'FontSize', fs_ax); xlim([280 400]);
 
 sgtitle('Figure 4 — ESO Disturbance Estimation (z_3/b_0) — Key ADRC vs IEID comparison metric', ...
-        'FontSize', 12, 'FontWeight','bold');
+        'FontSize', 16, 'FontWeight','bold');
 
 fprintf('\n4 figures generated.\n');
 fprintf('Note: z3/b0 (ESO estimate) vs actual disturbances — compare with IEID d_tilde later.\n');

@@ -1,4 +1,4 @@
-function rho = total_reactivity(n, Tf, Tl, Te, rho_rod)
+function rho = total_reactivity(n, Tf, Tl, Te, rho_rod, d_rho)
 %TOTAL_REACTIVITY Computes the total reactivity including feedback.
 %
 %   INPUTS:
@@ -7,6 +7,11 @@ function rho = total_reactivity(n, Tf, Tl, Te, rho_rod)
 %     Tl      : Coolant temperature
 %     Te      : Coolant inlet temperature
 %     rho_rod : Reactivity from control rods
+%     d_rho   : (Optional) External reactivity disturbance
+
+if nargin < 6
+    d_rho = 0;
+end
 
 Tf0 = 650;
 Tl0 = 314;
@@ -18,6 +23,7 @@ ac = (-4*n - 17.3)*1e-5;
 
 % Total reactivity formula
 rho = rho_rod ...
+    + d_rho ...
     + af*(Tf - Tf0) ...
     + 0.5*ac*(Tl - Tl0) ...
     + 0.5*ac*(Te - Te0);

@@ -33,13 +33,15 @@ else
     m.rise_time = NaN;
 end
 
-% Settling time (2% band)
-band = 0.02 * delta_y;
+% Settling time (5% band due to high disturbance)
+band = 0.05 * delta_y;
 idx_settle = find(abs(y_after - y_final) > band, 1, 'last');
-if ~isempty(idx_settle) && idx_settle < length(t_after)
+if isempty(idx_settle)
+    m.settling_time = 0; % Already within the band after the step
+elseif idx_settle < length(t_after)
     m.settling_time = t_after(idx_settle) - t_step;
 else
-    m.settling_time = 0; % Already settled or never left
+    m.settling_time = NaN; % Did not settle within the simulated time
 end
 
 % Overshoot
